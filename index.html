@@ -174,7 +174,7 @@
 			for (let i = 0; i < arrayBotões.length; i++) {		
 				if(novaCor){
 					arrayBotões[i].disabled=true;					
-					if (!chance){
+					if (chance<=0){
 						arrayBotões[palpite-1].classList.add("gameover");
 					}													
 					arrayBotões[segredo-1].disabled=false;
@@ -206,7 +206,7 @@
 			if(palpite < segredo){
 				chance--;
 				estrelas = estrelas.substring(0, estrelas.length -1);
-				if (chance == 0){
+				if (chance <= 0){
 					stringDica.innerHTML = "Game Over! " + estrelas + chance;
 					novaCor = 1;
 				}
@@ -220,7 +220,7 @@
 			}else if(palpite > segredo){
 				chance--;
 				estrelas = estrelas.substring(0, estrelas.length -1);
-				if (chance == 0){
+				if (chance <= 0){
 					stringDica.innerHTML = "Game Over! " + estrelas + chance;
 					novaCor = 1;
 				}
