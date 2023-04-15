@@ -1,0 +1,77 @@
+		body{
+			background: black;	
+			background-repeat: no-repeat;
+			background-size: 360px auto;
+			width: 360px;
+		}
+		h1 {font-family: "Lucida Console", "Courier New", monospace;
+			font-size:32px;	
+  			color: rgb(240, 19, 3);
+			  text-align: center;
+			
+		}
+		h2 {	font-family: "Lucida Console", "Courier New", monospace;		
+			font-size:22px;	
+  			color: #f93;
+			text-align: center;
+			}
+		
+			
+		#divTela {
+			background:  rgb(2, 2, 80);
+			max-width: 344px;
+  			font-family: "Lucida Console", "Courier New", monospace;
+  			font-size:22px;	
+  			color: #fff;
+		}
+		#divMenu{
+			
+			/*background: rgb(1, 83, 1) ;
+			color: #f0f;
+			background-image: url('1.gif');	*/		
+			max-width: 400px;
+		}
+		#divBotões 
+		{ 
+			max-width: 400px;
+		}
+		#divPalpites {	background:  rgb(71, 0, 0) ;
+			max-width: 344px;
+  			font-family: "Lucida Console", "Courier New", monospace;
+  			font-size:22px;	
+  			color: rgb(252, 229, 83);
+		}
+		.tema {
+			font-family: "Lucida Console", "Courier New", monospace;
+			width: 200px;
+			height: 35px;
+			font-size: 28px;
+			color: #f40;
+			margin: 20px 80px;
+			/*white-space: normal;*/
+			/*display: inline-block;*/
+			
+		}
+		.botão {
+			width: 54px;
+			height: 48px;
+			font-size: 24px;
+			margin: 2px 0px;
+			/*white-space: normal;*/
+			display: inline-block;
+		}	
+		.gameover {
+			background-color: red;		
+			color: rgb(255, 255, 255);
+
+		}
+		.segredo {
+			background-color: rgb(238, 255, 0);
+			color: rgb(0, 0, 0);
+			border-style: solid;
+			border-width: medium;
+		}
+		.transparente {
+			opacity: 0;
+		}
+
