@@ -1,20 +1,82 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Palpite</title>
-  <link rel="stylesheet" href="css/style.css">
+  <style>
+  body{
+			background: black;	
+			background-repeat: no-repeat;
+			background-size: 360px auto;
+			width: 360px;
+		}
+		h1 {
+			font-family: "Lucida Console", "Courier New", monospace;
+			font-size:32px;	
+  			color: rgb(240, 19, 3);
+			text-align: center;			
+		}
+		h2 {
+			font-family: "Lucida Console", "Courier New", monospace;		
+			font-size:22px;	
+  			color: #f93;
+			text-align: center;
+		}					
+		#divTela {
+			background:  rgb(2, 2, 80);
+			max-width: 344px;
+  			font-family: "Lucida Console", "Courier New", monospace;
+  			font-size:22px;	
+  			color: #fff;
+		}
+		#divMenu{
+			max-width: 400px;
+		}
+		#divBotões { 
+			max-width: 400px;
+		}
+		#divPalpites {
+			background:  rgb(71, 0, 0) ;
+			max-width: 344px;
+  			font-family: "Lucida Console", "Courier New", monospace;
+  			font-size:22px;	
+  			color: rgb(252, 229, 83);
+		}
+		.tema {
+			font-family: "Lucida Console", "Courier New", monospace;
+			width: 200px;
+			height: 35px;
+			font-size: 28px;
+			color: #f40;
+			margin: 20px 80px;			
+		}
+		.botão {
+			width: 54px;
+			height: 48px;
+			font-size: 24px;
+			margin: 2px 0px;
+			display: inline-block;
+		}	
+		.gameover {
+			background-color: red;		
+			color: rgb(255, 255, 255);
+		}
+		.segredo {
+			background-color: rgb(238, 255, 0);
+			color: rgb(0, 0, 0);
+			border-style: solid;
+			border-width: medium;
+		}
+		.transparente {
+			opacity: 0;
+		}
+</style>
 </head>
-
 <body>
-
- <div id="divTela">		
-	</div>
-	
-	<!--button type="button" onclick="mudarTela('divMenu')">Mostrar / Esconder</button-->
+<div id="divTela">		
+</div>
 <div id="divMenu">
 <h1>Palpite</h1>
 <h2>Telas</h2>
@@ -86,12 +148,310 @@
 		<button class="botão" value="59">59</button>
 		<button class="botão" value="60">60</button>
 	</div>
-	 <div id="divPalpites">		
+	<div id="divPalpites">		
 	</div>
- 
-  <script src="js/telas.js"></script>
-  <script src="js/main.js"></script>
-   
+<script>
+ 		mostrarMenu();// e ocultar os números e informações de tela e chances	
+		function mostrarMenu(){		
+			document.body.style.backgroundImage = "url('https://64.media.tumblr.com/3641e6e25e89d9ffa6d751b82610d118/tumblr_mr0b2hGZ2C1sdxraao1_500.gifv')";		
+			document.getElementById("divTela").style.display = 'none';
+			document.getElementById("divMenu").style.display = 'block';
+			document.getElementById("divBotões").style.display = 'none';
+			document.getElementById("divPalpites").style.display = 'none';	
+		}		
+		//desabilitar os botões de algumas "Telas" no início
+		document.getElementById("bot2").disabled = true;
+		document.getElementById("bot3").disabled = true;
+		document.getElementById("bot4").disabled = true;
+		document.getElementById("bot5").disabled = true;
+		function escolherTema(escolha){	
+			tela = escolha;
+			mudarTela();
+			chance = 8;
+			stringTela = document.getElementById("divTela");
+			stringTela.innerHTML = "Tela " + tela;
+			stringPalpites = document.getElementById("divPalpites");
+			stringPalpites.innerHTML = "Palpites: "  + chance;
+			mostrarTelaNumerosChances()	;// e ocultar os menus	
+		}	
+		function mostrarTelaNumerosChances() {
+			document.getElementById("divTela").style.display = 'block';
+			document.getElementById("divMenu").style.display = 'none';
+			document.getElementById("divBotões").style.display = 'block';
+			document.getElementById("divPalpites").style.display = 'block';	
+		}
+		let novaCor = 0; //para botoes VERMELHO/AMARELO
+		let terminou = 0; //a tela ou as chances
+		let ativos = [];
+		let arrayBotões = document.getElementsByClassName("botão");
+		registrarAtivos();
+		function registrarAtivos(){
+			for (let i = 0; i <  arrayBotões.length;  i++){
+				ativos[i] = i+1;
+			}
+		}
+		let segredo = Math.floor(Math.random()*arrayBotões.length) + 1;		
+		for (let i = 0; i < arrayBotões.length; i++) {			
+			arrayBotões[i].addEventListener("click", function() {			
+				if (terminou){
+					if(chance<=0){					
+						mostrarMenu();					
+						arrayBotões[palpite-1].classList.remove("gameover");																			
+						arrayBotões[segredo-1].disabled=false;
+						arrayBotões[segredo-1].classList.remove("segredo");				
+					}					
+					else if (tela%10 == 0){								
+						if(tela == 10)
+							document.getElementById("bot2").disabled = false;
+						else if(tela == 20)
+							document.getElementById("bot3").disabled = false;
+						else if(tela == 30)
+							document.getElementById("bot4").disabled = false;
+						else if(tela == 40)
+							document.getElementById("bot5").disabled = false;
+						mostrarMenu();										
+					}
+					else {
+						tela++;
+						mudarTela();
+					}
+					chance=chance+4;			
+					stringTela.innerHTML = "Tela "+ tela ;
+					stringPalpites.innerHTML = "Palpites: "  + chance;
+					terminou = 0;
+					arrayBotões[palpite-1].classList.remove("segredo");
+					segredo = Math.floor(Math.random()*arrayBotões.length) + 1;
+					ativar();
+					registrarAtivos();
+				}
+				else{				
+					palpite = parseInt(this.value);
+					comparar(palpite);
+					desativar();
+				}							
+			});
+		}
+		function desativar() {	
+			for (let i = 0; i < arrayBotões.length; i++) {		
+				if(novaCor){
+					arrayBotões[i].disabled=true;
+					if (chance<=0){
+						arrayBotões[palpite-1].classList.add("gameover");						
+					}													
+					arrayBotões[segredo-1].disabled=false;
+					arrayBotões[segredo-1].classList.add("segredo");								
+					terminou=1;				
+				}											
+				else if(!ativos.includes(parseInt(arrayBotões[i].value))){
+					arrayBotões[i].disabled=true;
+					arrayBotões[i].classList.add("transparente");				
+				}			
+			}
+			novaCor=0;
+		}
+		function ativar() {
+			for (let i = 0; i < arrayBotões.length; i++) {	
+				arrayBotões[i].disabled=false;
+				arrayBotões[i].classList.remove("transparente");		
+			}			
+		}
+		function comparar(palpite){					
+			if(palpite < segredo){
+				chance--;
+				if (chance == 0)
+					mostrarGameover();				
+				else 
+					mostrarDica(">");
+				var index = ativos.indexOf(palpite);
+				//remove do início até a posição do palpite
+				ativos.splice(0,index+1);								
+			}
+			else if(palpite > segredo){
+				chance--;
+				if (chance == 0)
+					mostrarGameover();
+				else 
+					mostrarDica("<");
+				var index = ativos.indexOf(palpite);
+				//remove da posição do palpite até o final
+				ativos.splice(index);					
+			}	
+			else if(palpite == segredo){	
+					arrayBotões[palpite-1].classList.add("segredo");
+					if (tela%10 == 0){
+						if (tela == 50)
+							stringTela.innerHTML = "Parabéns! Você finalizou todas as telas.\nClique "  + palpite + " para tela menu";
+						else
+							stringTela.innerHTML = "Telas "+ (tela+1) + " a " + (tela+10) + " liberadas! \nClique " + palpite + " para continuar";				
+					}
+					else
+						stringTela.innerHTML = "Clique " + palpite + " para Tela " + (tela+1);
+					novaCor = 1;						
+			}	
+		}
+		function mostrarGameover(){
+			stringTela.innerHTML = "Acabaram seus palpites! \nClique " + segredo + " para tela menu";
+			stringPalpites.innerHTML = "Palpites: "  + chance;
+			novaCor = 1;
+		}
+		function mostrarDica(dica){
+			stringTela.innerHTML = "Tela "+ tela + " | O número é "+ dica;
+			stringPalpites.innerHTML = "Palpites: "  + chance;
+		}		
+		function mudarTela(){
+			switch (tela){			
+				case 1:			
+				document.body.style.backgroundImage = "url('https://64.media.tumblr.com/6003f7392c5123b6e12f1ce0618d8a57/b968cc85a3f6db0e-e3/s1280x1920/7fd52529805058d0e680e7f811576e27f5c53217.pnj')";
+				break;	
+				case 2:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/9f7231be36f3a90c95174adcee324105/b968cc85a3f6db0e-19/s1280x1920/1da34463b4d0ec032b207cef470810cd9984f37f.pnj')";
+				break;
+				case 3:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/0e70291002e68da2d0f4ac3bfa8a1d1c/b968cc85a3f6db0e-78/s1280x1920/830d00017010b928b2b8c73363f4d2d58e078e3b.pnj')";
+				break;
+				case 4:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/8299b67adca136541074bfc455ea8828/b968cc85a3f6db0e-a4/s1280x1920/460ec60309d656b24b4ffbb45373953afde62055.pnj')";		
+				break;
+				case 5:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/67389cb26705b3907c996f80c0071469/b968cc85a3f6db0e-3f/s1280x1920/b4091876f739e8eec70bd08d02042f4d3debee94.pnj')";
+				break;
+				case 6:	
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/2fd5c819718254c11901da57748f72d1/b968cc85a3f6db0e-6a/s1280x1920/4e1b17131d7d75f88cc21f2882fb5a2027f8945c.pnj')";
+				break;
+				case 7:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/0ae400d8c401340e76895e9b81464dd5/b968cc85a3f6db0e-cc/s1280x1920/1fcfe661417c924a4c82dece9f11b3cf177d0aa7.pnj')";
+				break;
+				case 8:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/8e9867a15e8405b0086bb8d526ff38f3/b968cc85a3f6db0e-b8/s1280x1920/5cc79b22f50c10e7ed8cb92cdbab28def6cfcf82.pnj')";
+				break;
+				case 9:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/deee4d0dc88b3f12cc9c55b2bc7a2707/ea1c59ab2242365e-4c/s2048x3072/fd9f57e0c92412c3263e5f6647accf5a819dc30e.jpg')";
+				break;
+				case 10:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/680a8ecc1434638c7372c895b425f98b/ea1c59ab2242365e-5b/s2048x3072/378cbd9cd5abb0ce742002568279e3e4ff3e48d9.jpg')";
+				break;
+				case 11:			
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/fc4381e45b3a0f2a7e85080ac5ceb535/b3fdeebe4ecf86c0-eb/s1280x1920/bf87e96afaf4da502ca7cf107ca91c17d5ae002a.jpg')";
+				break;	
+				case 12:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/e288635979041d355afbc1168d3f846e/82780e5bb436ed76-a9/s2048x3072/de1c9cd9713f53b9fedf85d84a19f6a81d6dd23c.pnj')";
+				break;
+				case 13:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/0cecee868005809b46564d0ee474361e/69e8692062fa2465-b6/s2048x3072/63a81e2e0d0db9b40017e1c3536507010ce208e3.jpg')";
+				break;
+				case 14:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/d29241c48424e14cee36d65d900ec33a/1a47cda07bb332a7-d1/s2048x3072/238dd9dc4335b5d69463c521d9c08fe2505f8f94.pnj')";		
+				break;
+				case 15:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/deafc31b23cc6165f99cf86c9f03bb51/70d0dc56de55a3ea-93/s1280x1920/0138184aab6e553a9a99f1c64dc496975a7d8e29.jpg')";
+				break;
+				case 16:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/884861a751a128c12d6f7ee8a6b68ca0/6d351d223f428014-22/s2048x3072/f14fb344391a66a138d9f15aca2ec76f4e1d2065.pnj')";
+				break;			
+				case 17:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/7dbf57f4afd9f9a6b6e193f517a741ac/ee04a7c807f0ebc7-79/s2048x3072/4b9fe553c4ae50813514b02946d8e83c625bc128.jpg')";
+				break;
+				case 18:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/e812f4695ffcd7078061f40ecf99d318/25afc58b3fe56de9-44/s1280x1920/7d13c5005f84426d6454a37274c4447a39602143.jpg')";
+				break;
+				case 19:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/8d0b69e84d3abf7bff33987b9fb00e3c/25afc58b3fe56de9-b5/s1280x1920/d2108c482e762927d16e23868f437fc9537f4b79.jpg')";	
+				break;
+				case 20:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/7f1c28c6b76c1077fad1edc719fe2e64/25afc58b3fe56de9-84/s1280x1920/f60866b5636ecbe3733a4a99e9a34bcd918c6b53.jpg')";
+				break;
+				case 21:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/998c97fe1aea089c7cbc2bb791977f8b/0340068fad4a1c67-cf/s1280x1920/ea4b2ee9998b114ec18f9b35339edc6194463cde.jpg')";
+				break;
+				case 22:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/44f1f9c7d810361fdd6c3146a21fd9c8/0340068fad4a1c67-24/s1280x1920/6fbd112500a48ca1952c96d00efa3f6f56187d75.jpg')";
+				break;
+				case 23:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/ce7ba6e79f21d2d0995acc0ed663445d/0340068fad4a1c67-6e/s1280x1920/42ec358fea2fab514651b8fe3809ff0f27f1eb02.jpg')";
+				break;
+				case 24:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/50817adb786d0367419566b957b02ba9/0340068fad4a1c67-85/s1280x1920/4f21c2d15783d93b87ae968b444893c3de087228.jpg')";
+				break;
+				case 25:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/3d311f0c05bc10be71752f972b04f14c/0340068fad4a1c67-3b/s1280x1920/90d39ae09ebb48c745b6fd6e8ab0fd2adac5c1a7.jpg')";
+				break;
+				case 26:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/b295c8166f4d0a845300e0e42a5d47cb/0340068fad4a1c67-fc/s1280x1920/f2393ae2abda0ae528408b4d8caa2f501d6b942a.jpg')";
+				break;
+				case 27:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/e286a9eeb52e65f0bd0a9666c73d5c79/0340068fad4a1c67-0f/s1280x1920/c7b961bb2e389da0553a20afb1c89530fe7e1c59.jpg')";
+				break;
+				case 28:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/e95aad1d24a6f4b0a5130217ddf318cd/f0bedecf0370b072-4e/s400x600/4c7c182395f99c6ee8c643f69789cf9201d70862.jpg')";				
+				break;
+				case 29:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/91f0ca269d1ec69e39c77ed0442c6828/daec3ba8b66de6cd-38/s540x810/80f92402245e9535353bd76e84726ada50cdf465.jpg')";
+				break;
+				case 30:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/aeb292da06522d44d895c76ee7128a7a/947afc5867c7de89-82/s2048x3072/31c038db8fb6422b4d3f61f73bee60f1312b80a8.jpg')";		
+				break;
+				case 31:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/cdec143a9c90a64b16aa30c8c1bb568d/d03f119ee21e422b-9d/s540x810/86fa0ae1ca493d518b7b0391a75320d7f5d00f1e.jpg')";
+				break;
+				case 32:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/0dc6512ad64ea1676d5669691b7234b0/000dee7720ad2a8a-2b/s400x600/ad3c4b0e0e243da1508dd0432ba8e9d5ee944195.jpg')";
+				break;
+				case 33:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/28a5b8c3d4e5b7ea1024706b6fbcf776/b75d78941fb02ce9-7e/s400x600/b2a37dd3d4bf61650cc178abd40cd4271aa5c85e.jpg')";
+				break;
+				case 34:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/977d0f5ee2926e03e90cdef89d090f9b/9a01a1fe20fc3189-fe/s640x960/b121f1d3cb2eca68165333a9dab80415ac32e11e.jpg')";
+				break;
+				case 35:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/5584f92e98c001c5896645d2eb8fea4d/4a1c74b7f4559564-31/s500x750/6d0fb3f1bbe029dc449bd7e9f9710ae74297a124.jpg')";
+				break;
+				case 36:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/71b13eb0976ae32ce9a95961001f414f/a09cef74313d92ab-79/s400x600/51aeae5fd3e377e57fded4885be2ef9c93aacf05.jpg')";
+				break;
+				case 37:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/395edff65a52eb6d59469ba75b1f91ab/191eca43f6e3e063-5d/s400x600/e78d7a851639bcc31dc130daaee6ba8e2f8ca9de.jpg')";
+				break;
+				case 38:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/138f582de1ad586731cf51954af87336/8162183194d7d6d5-0e/s250x400/757ca4219734ecf0b1f3756cb67f4f146e59aad8.pnj')";
+				break;
+				case 39:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/e6a5d19ac907fb5ca1e825f8d28bdc39/057d2698370726f2-9a/s250x400/6153d93d790021c50e5f308b0bdfed9a66c835a6.gifv')";
+				break;
+				case 40:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/6c6be6b07724d3e709415d6e2fdee5aa/14325a69374aee55-e4/s250x400/02e8def2e5597e70aedb8490305b47a9563331de.gifv')";
+				break;
+				case 41:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/3f5bb8b9fe8d7447ed30465f5a2b3a4d/6facc546e14fdbd4-2a/s2048x3072/b1718dd113daf6bae36665f8df79aee2d0fc8486.pnj')";
+				break;
+				case 42:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/da47cd0f6651c174fea68d2aaeabb08f/4a8ce2b97083d541-9b/s400x600/f48a6ab0e2dcfe9abd4375ca34b6caed3da609ab.jpg')";
+				break;
+				case 43:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/a5ead777bd99184d3459201238f797ef/tumblr_oa8gyxJzOs1vanmvho1_250.jpg')";
+				break;
+				case 44:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/907ee66e0507390a9af188bb32a4a9e0/24930acfffbfa47b-02/s500x750/f4ab857017dca60ffda26c1a3a34a9165b1bcebc.pnj')";
+				break;
+				case 45:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/41d386dbbcebfc217aba094ec4618eec/e5980eb79afa191b-36/s1280x1920/c559843d3ed353b44a4fb7f98f927613b97a17f7.jpg')";
+				break;
+				case 46:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/eaa97b9abfeed86d26eaaad5cf79225e/7a7f241d0520ec35-59/s250x400/02c5aadd04f1822a8b57efbd921872dc382260bc.jpg')";
+				break;
+				case 47:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/315fdd41e0dfb9c3b4417af084147088/2b13fe7180ed9a51-5b/s1280x1920/394c5b1a6672f14e1bf1e9f2c3982cecc545f0ea.png')";
+				break;
+				case 48:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/dea60684fe4741657de2591d665c1bcf/e05fb09bd3aa227d-71/s2048x3072/eb3d1380dfdac151d657c6dab6baa5ca4bc9b8d1.pnj')";
+				break;
+				case 49:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/678904de8226397959a41811c0ada012/8337a256b723db24-2b/s2048x3072/62e96346315c5b3b2ae042a4650dd4fdb2094352.pnj')";
+				break;
+				case 50:
+				document.body.style.backgroundImage="url('https://64.media.tumblr.com/5e18ca467d0209b82e55df0ee516906c/4b32aa7f562d24b7-6a/s400x600/7a8b8e27a290d667d5e16fe2c9d8399d2e0f882a.pnj')";
+				break;
+			}
+		}
+</script>
 </body>
-
 </html>
