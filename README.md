@@ -2,5 +2,4 @@
 
 https://rm48.github.io/palpite/
 
-
-![01](https://user-images.githubusercontent.com/90143160/231614680-4a7e5140-68a0-4587-9790-ebc73b08e32d.jpg)
+![fe8457hgf0w](https://github.com/rm48/palpite/assets/90143160/d313979b-a728-4471-9bb6-49d8847ee780)
